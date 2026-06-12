@@ -19,12 +19,13 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle 401/403 responses globally
+// Handle 401 responses globally (expired/invalid token → force re-login)
+// 403 is NOT handled here — it means "forbidden for this action" and should
+// be shown as an error toast by the calling component.
 API.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Only redirect if we're not already on auth pages
+    if (error.response && error.response.status === 401) {
       const path = window.location.pathname;
       if (path !== "/login" && path !== "/register") {
         localStorage.removeItem("token");
