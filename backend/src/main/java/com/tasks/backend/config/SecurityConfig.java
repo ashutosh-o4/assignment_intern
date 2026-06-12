@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.tasks.backend.common.security.UserDetailsServiceImpl;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +29,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     // Paths that don't need a token
     private static final String[] PUBLIC_URLS = {
@@ -40,6 +42,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 // Disable CSRF — we use JWT, not sessions
                 .csrf(AbstractHttpConfigurer::disable)
 
@@ -83,5 +86,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    
 }
