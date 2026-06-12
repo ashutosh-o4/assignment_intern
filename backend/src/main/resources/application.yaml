@@ -13,7 +13,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
 
 server:
@@ -37,4 +37,5 @@ springdoc:
     path: /v3/api-docs
 
 jwt:
-
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
